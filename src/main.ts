@@ -25,12 +25,21 @@ form.addEventListener("submit", async (e) => {
       prompt,
     }),
   });
-  // access image url from response
-  const { image } = await response.json();
-  // insert image in ui
-  const result = document.querySelector("#result") as HTMLDivElement;
-  // the width matches css max width and since in server we are req aspect-ratio of 1/1 and also specifying this in css I guess we only need width here
-  result.innerHTML = `<img src="${image}" width="512"/>`;
+  // client side error handling
+  // if status ok then no errors happened
+  if (response.ok) {
+    // access image url from response
+    const { image } = await response.json();
+    // insert image in ui
+    const result = document.querySelector("#result") as HTMLDivElement;
+    // the width matches css max width and since in server we are req aspect-ratio of 1/1 and also specifying this in css I guess we only need width here
+    result.innerHTML = `<img src="${image}" width="512"/>`;
+  } else {
+    // the text method attached to the Fetch API Response object reads the body of the response and returns a Promise that resolves to a text string. This is typically used when the response body contains plain text or other non-binary data formats like JSON. this is why we use await here
+    const error = await response.text();
+    alert(error);
+    console.error(error);
+  }
   hideSpinner();
 });
 
