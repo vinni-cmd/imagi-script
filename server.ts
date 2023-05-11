@@ -1,3 +1,5 @@
+// here we build out our backend api in our server file
+
 // allows us to access then env variables defined in the .env file
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -20,7 +22,7 @@ app.use(cors());
 // tells api that it only wants to handle incoming data in json format
 app.use(express.json());
 
-// create endpoint
+// create/define endpoint or ?route?
 // http method post is used because we are creating a new piece of data
 // method takes two arguments
 // string that reps the url of the api
@@ -42,6 +44,9 @@ app.post("/imagine", async (req, res) => {
   // send url back to client as response using the send method on the response object
   // client/browser will then receive this data as json
   res.send({ image });
+  // res.status(500).json({message:"error"}); still displays hi but also has erorr in console
+  // res.download("server.ts") - popup dwnload
+  // res.render('index') renders index.html file from views folder - this needs a view engine
 });
 
 // fire up the server by providing the listen method with the port you want to use

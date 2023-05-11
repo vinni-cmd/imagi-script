@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "devStart": "nodemon server.ts",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
@@ -11,6 +12,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "nodemon": "^2.0.22",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
   },
