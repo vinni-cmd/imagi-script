@@ -4,6 +4,7 @@ const form = document.querySelector("form") as HTMLFormElement;
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  showSpinner();
 
   // extract data from form by instantiating a new FormData object using our form as an input - provides us with a data strcuture that behaves like a js Map
   // could also just access prompt input directly
@@ -30,4 +31,18 @@ form.addEventListener("submit", async (e) => {
   const result = document.querySelector("#result") as HTMLDivElement;
   // the width matches css max width and since in server we are req aspect-ratio of 1/1 and also specifying this in css I guess we only need width here
   result.innerHTML = `<img src="${image}" width="512"/>`;
+  hideSpinner();
 });
+
+// Show a loading indicator while the app is fetching data
+function showSpinner(): void {
+  const button = document.querySelector("button") as HTMLButtonElement;
+  // no more button clicks
+  button.disabled = true;
+  button.innerHTML = 'Dreaming... <span class="spinner">☁️</span>';
+}
+function hideSpinner(): void {
+  const button = document.querySelector("button") as HTMLButtonElement;
+  button.disabled = false;
+  button.innerHTML = "Dreaming";
+}
