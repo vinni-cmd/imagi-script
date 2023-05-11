@@ -28,25 +28,37 @@ app.use(express.json());
 // string that reps the url of the api
 // callback func that has a req and res object that we can interact with. callback will be called each time someone navigates to this url
 app.post("/imagine", async (req, res) => {
-  // access user provided description of image
-  const prompt = req.body.prompt;
-  // using prompt as a arg for the createImage method, make request to openai api and wait for res before resuming function execution
-  // store the response object
-  const aiResponse = await openai.createImage({
-    prompt,
-    // requesting one image only
-    n: 1,
-    // resolution
-    size: "1024x1024",
-  });
-  // access the image url from the response
-  const image = aiResponse.data.data[0].url;
-  // send url back to client as response using the send method on the response object
-  // client/browser will then receive this data as json
-  res.send({ image });
-  // res.status(500).json({message:"error"}); still displays hi but also has erorr in console
-  // res.download("server.ts") - popup dwnload
-  // res.render('index') renders index.html file from views folder - this needs a view engine
+  // in a async function you can handle errors by wrapping code in a try-catch block
+  try {
+    // access user provided description of image
+    const prompt = req.body.prompt;
+    // using prompt as a arg for the createImage method, make request to openai api and wait for res before resuming function execution
+    // store the response object
+    const aiResponse = await openai.createImage({
+      prompt,
+      // requesting one image only
+      n: 1,
+      // resolution
+      size: "1024x1024",
+    });
+    // access the image url from the response
+    const image = aiResponse.data.data[0].url;
+    // send url back to client as response using the send method on the response object
+    // client/browser will then receive this data as json
+    res.send({ image });
+    // res.status(500).json({message:"error"}); still displays hi but also has erorr in console
+    // res.download("server.ts") - popup dwnload
+    // res.render('index') renders index.html file from views folder - this needs a view engine
+  } catch (error: any) {
+    // handle errors on the server side
+    console.log("SERVER ERROR::: ", error);
+    // but also send down an error response back down to the cleint
+    // can send diff codes but here just 500 (server failure) to keep it simple
+    // chaining on a server message  which might? be defined by openai
+    res
+      .status(500)
+      .send(error?.response.data.error.message || "Something went wrong");
+  }
 });
 
 // fire up the server by providing the listen method with the port you want to use
